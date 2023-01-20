@@ -1,15 +1,13 @@
-import { MenuItem } from '@/Types'
 import Navbar from './Navbar'
 
 interface LayoutProps {
 	children: React.ReactNode
-	navbarLinks: MenuItem[]
 }
 
-const Layout = ({ children, navbarLinks }: LayoutProps) => {
+const Layout = ({ children }: LayoutProps) => {
 	return (
 		<>
-			<Navbar links={navbarLinks} />
+			<Navbar />
 			{children}
 		</>
 	)
