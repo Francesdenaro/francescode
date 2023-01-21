@@ -1,3 +1,5 @@
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: [
@@ -10,9 +12,16 @@ module.exports = {
 			current: 'currentColor',
 			black: '#000',
 			white: '#fff',
-			primary: '#1d73be'
+			primary: '#1d73be',
 		},
-		extend: {},
+		fontFamily: {
+			sans: ['Fira Sans', 'serif'],
+		},
+		extend: {
+			boxShadow: {
+				hard: '7px 7px 0 0',
+			},
+		},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/typography')],
 }

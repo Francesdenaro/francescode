@@ -1,7 +1,23 @@
+import Button from '@/components/Button'
+import client, { urlFor } from '@/lib/sanity'
+import { PageData, Section } from '@/Types'
+import { PortableText } from '@portabletext/react'
 import Head from 'next/head'
 import Image from 'next/image'
 
-export default function Home() {
+interface Props {
+	pageData: PageData
+	sections: Section[]
+}
+
+export default function Home({ pageData, sections }: Props) {
+	console.log(sections)
+	const hero = sections.find(section => section.identifier === 'home-hero')
+	const shortDev = sections.find(
+		section => section.identifier === 'home-short-dev'
+	)
+	const about = sections.find(section => section.identifier === 'home-about')
+
 	return (
 		<>
 			<Head>
@@ -10,7 +26,65 @@ export default function Home() {
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 				<link rel='icon' href='/logo.png' />
 			</Head>
-			<main className='bg-white'></main>
+			{hero && (
+				<section className='flex flex-col gap-8 border-b-4 border-primary pb-16'>
+					<h1 className='text-6xl font-normal text-primary'>{hero.title}</h1>
+					<div className='flex items-start gap-2'>
+						<div className='prose prose-xl'>
+							<PortableText value={hero.body} />
+						</div>
+						<Image
+							className='rounded-2xl'
+							src={urlFor(hero.image.asset).url()}
+							width={250}
+							height={100}
+							alt={hero.image.alt}
+						/>
+					</div>
+					<Button text={hero.link.title} link href={hero.link.link} />
+				</section>
+			)}
+			{/* <section>//articles section</section> */}
+			{shortDev && (
+				<aside className='my-40 w-full border-t-4 border-b-4 border-primary py-12 text-center text-2xl font-bold tracking-wide text-primary'>
+					<PortableText value={shortDev.body} />
+				</aside>
+			)}
+			{about && (
+				<section className='flex flex-col items-center gap-8 border-b-4 border-primary pb-16'>
+					<h2 className='text-5xl font-semibold text-primary'>{about.title}</h2>
+					<div className='flex items-start gap-12'>
+						<Image
+							className='rounded-2xl'
+							src={urlFor(about.image.asset).url()}
+							width={420}
+							height={100}
+							alt={about.image.alt}
+						/>
+						<div className='prose prose-xl max-w-md'>
+							<PortableText value={about.body} />
+							<Button text={about.link.title} link href={about.link.link} />
+						</div>
+					</div>
+				</section>
+			)}
 		</>
 	)
+}
+
+export async function getStaticProps() {
+	const pageData = await client.fetch(
+		'*[_type == "page" && identifier == "home"][0]'
+	)
+
+	const sections = await client.fetch(
+		`*[_type == "section" && identifier match "home-*"]`
+	)
+
+	return {
+		props: {
+			pageData,
+			sections,
+		},
+	}
 }

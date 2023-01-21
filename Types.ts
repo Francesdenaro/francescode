@@ -1,18 +1,22 @@
+import { TypedObject } from '@sanity/types'
+
 export interface MenuItem {
 	title: string
 	link: string
 }
 
 export interface Section {
+	identifier: string
 	title: string
 	link: {
 		title: string
 		link: string
 	}
-	body: {
-		children: {
-			text: string
-		}[]
+	body: TypedObject
+
+	image: {
+		asset: string
+		alt: string
 	}
 }
 export interface PageData {
