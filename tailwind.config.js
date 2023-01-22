@@ -21,6 +21,9 @@ module.exports = {
 			sans: ['Fira Sans', 'serif'],
 		},
 		extend: {
+			screens: {
+				xs: '480px',
+			},
 			boxShadow: {
 				hard: '7px 7px 0 0',
 			},

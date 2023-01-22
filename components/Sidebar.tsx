@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function Sidebar() {
 	return (
-		<aside className='flex w-96 flex-col justify-between bg-primary'>
+		<aside className='hidden w-96 flex-col justify-between bg-primary sm:flex'>
 			<div className='flex flex-col items-center py-6'>
 				<p className='mt-2 text-sm text-white'>FrancesCode</p>
 			</div>

@@ -43,7 +43,7 @@ export interface Post {
 		alt: string
 	}
 	body: TypedObject
-	categories: { _ref: string }[]
+	categories: { slug: string; title: string }[]
 	author: Author
 	featured: boolean
 	metaTitle: string

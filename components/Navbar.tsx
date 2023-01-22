@@ -22,7 +22,7 @@ const Navbar = () => {
 	}, [])
 
 	return (
-		<header className='mb-12 flex flex-wrap items-center justify-between bg-primary p-6 text-white transition-all'>
+		<header className='mb-12 flex flex-wrap items-center justify-between bg-primary p-6 text-white shadow-lg transition-all'>
 			<div className='mr-6 flex flex-shrink-0 items-center'>
 				<Link href='/' className='text-xl font-semibold tracking-tight'>
 					FrancesCode

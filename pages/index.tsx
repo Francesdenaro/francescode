@@ -26,9 +26,11 @@ export default function Home({ pageData, sections }: Props) {
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 			</Head>
 			{hero && (
-				<section className='flex w-full flex-col gap-12 border-b-4 border-primary pb-16'>
-					<h1 className='text-6xl font-normal text-primary'>{hero.title}</h1>
-					<div className='flex items-start justify-between gap-2'>
+				<section className='flex w-full flex-col gap-12 rounded-3xl p-16 shadow-lg'>
+					<h1 className='text-3xl font-normal text-primary sm:text-6xl'>
+						{hero.title}
+					</h1>
+					<div className='flex flex-col items-start justify-between gap-2 lg:flex-row'>
 						<div className='prose prose-xl'>
 							<PortableText value={hero.body} />
 						</div>
@@ -41,30 +43,32 @@ export default function Home({ pageData, sections }: Props) {
 							alt={hero.image.alt}
 						/>
 					</div>
-					<Button text={hero.link.title} link href={hero.link.link} />
+					<div className='self-start'>
+						<Button text={hero.link.title} link href={hero.link.link} />
+					</div>
 				</section>
 			)}
 			{/* <section>//articles section</section> */}
 			{shortDev && (
-				<aside className='my-40 w-full border-t-4 border-b-4 border-primary py-12 text-center text-2xl font-bold tracking-wide text-primary'>
+				<aside className='my-40 w-full rounded-3xl py-12 text-center text-2xl font-bold tracking-wide text-primary shadow-lg'>
 					<PortableText value={shortDev.body} />
 				</aside>
 			)}
 			{about && (
 				<section className='flex w-full flex-col items-center gap-8 border-b-4 border-primary pb-16'>
 					<h2 className='text-5xl font-semibold text-primary'>{about.title}</h2>
-					<div className='flex items-start gap-12'>
+					<div className='flex flex-col items-start gap-12 sm:flex-row-reverse'>
+						<div className='prose prose-xl max-w-2xl rounded-3xl p-8 shadow-lg'>
+							<PortableText value={about.body} />
+							<Button text={about.link.title} link href={about.link.link} />
+						</div>
 						<Image
-							className='rounded-2xl'
+							className='shadowlg rounded-3xl'
 							src={urlFor(about.image.asset).url()}
 							width={420}
 							height={100}
 							alt={about.image.alt}
 						/>
-						<div className='prose prose-xl max-w-md'>
-							<PortableText value={about.body} />
-							<Button text={about.link.title} link href={about.link.link} />
-						</div>
 					</div>
 				</section>
 			)}

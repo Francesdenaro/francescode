@@ -21,7 +21,7 @@ const Layout = ({
 			</Head>
 			<div className='flex min-h-screen flex-col'>
 				<Navbar />
-				<div className='mx-auto mb-auto flex h-auto w-content items-stretch justify-center gap-10'>
+				<div className='mx-auto mb-auto flex h-auto w-full items-stretch justify-center gap-10 p-4 pb-16 xl:w-content'>
 					<main
 						className={`mb-auto flex ${
 							hasSidebar ? 'w-full max-w-4xl' : 'w-content'
