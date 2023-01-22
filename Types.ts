@@ -1,4 +1,4 @@
-import { TypedObject } from '@sanity/types'
+import { Slug, TypedObject } from '@sanity/types'
 
 export interface MenuItem {
 	title: string
@@ -24,4 +24,44 @@ export interface PageData {
 	metaTitle: string
 	metaDescription: string
 	sections: Section[]
+}
+
+export interface Category {
+	_id: string
+	title: string
+	slug: Slug
+	description: TypedObject
+}
+
+export interface Post {
+	title: string
+	slug: Slug
+	excerpt: string
+	publishedAt: string
+	mainImage: {
+		asset: string
+		alt: string
+	}
+	body: TypedObject
+	categories: { _ref: string }[]
+	author: Author
+	featured: boolean
+	metaTitle: string
+	metaDescription: string
+}
+
+export interface Author {
+	name: string
+	slug: Slug
+	image: {
+		asset: string
+		alt: string
+	}
+	bio: TypedObject
+}
+
+export interface Tag {
+	title: string
+	slug: Slug
+	description?: TypedObject
 }
