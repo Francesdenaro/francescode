@@ -21,6 +21,12 @@ module.exports = {
 			boxShadow: {
 				hard: '7px 7px 0 0',
 			},
+			maxWidth: {
+				'8xl': '88rem',
+			},
+			width: {
+				content: '1280px',
+			},
 		},
 	},
 	plugins: [require('@tailwindcss/typography')],

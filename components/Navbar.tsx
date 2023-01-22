@@ -11,7 +11,6 @@ const Navbar = () => {
 		const links = await client.fetch(
 			'*[_type == "menu" && identifier == "main"][0]'
 		)
-		console.log(links.items)
 		return links.items
 	}
 
