@@ -44,7 +44,6 @@ export default function Posts({
 		}
 	}
 
-	console.log(loadedPosts, posts)
 	return (
 		<>
 			<Head>
