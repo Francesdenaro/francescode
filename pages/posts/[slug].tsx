@@ -17,11 +17,11 @@ export default function Posts({ post }: { post: Post }) {
 			.replace(/^-+/, '') // Trim - from start of text
 			.replace(/-+$/, '') // Trim - from end of text
 	}
-	return (
+	return post ? (
 		<Layout>
 			<Image
-				src={urlFor(post.mainImage.asset).url()}
-				alt={post.mainImage.alt}
+				src={post ? urlFor(post.mainImage.asset).url() : ''}
+				alt={post ? post.mainImage.alt : ''}
 				width={800}
 				height={600}
 				className='mb-10 rounded-2xl shadow-md '
@@ -33,7 +33,6 @@ export default function Posts({ post }: { post: Post }) {
 					components={{
 						types: {
 							image: ({ value }) => {
-								console.log(value)
 								return (
 									<Image
 										src={urlFor(value.asset).url()}
@@ -63,6 +62,10 @@ export default function Posts({ post }: { post: Post }) {
 					}}
 				/>
 			</article>
+		</Layout>
+	) : (
+		<Layout>
+			<h1 className='text-2xl font-semibold text-primary'>Loading...</h1>
 		</Layout>
 	)
 }

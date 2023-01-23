@@ -5,7 +5,7 @@ import { Category, Post } from '@/Types'
 import Image from 'next/image'
 import Link from 'next/link'
 import Head from 'next/head'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Button from '@/components/Button'
 
 export default function Posts({
@@ -19,8 +19,6 @@ export default function Posts({
 	const [lastPostDate, setLastPostDate] = useState<string>(
 		posts[posts.length - 1].publishedAt
 	)
-
-	console.log(posts)
 
 	const loadMorePosts = async () => {
 		if (lastPostDate === '') return
@@ -45,6 +43,8 @@ export default function Posts({
 			setLoadedPosts(prev => [...prev, ...nextPosts])
 		}
 	}
+
+	console.log(loadedPosts, posts)
 	return (
 		<>
 			<Head>
@@ -77,7 +77,7 @@ export default function Posts({
 									</div>
 									<span>
 										{post.categories.map((category, index) => (
-											<>
+											<React.Fragment key={category.title}>
 												<Link
 													className='text-sm uppercase text-primary hover:underline'
 													href={`/category/${category.slug}`}
@@ -87,7 +87,7 @@ export default function Posts({
 												{index !== post.categories.length - 1 && (
 													<span className='text-primary'>{' / '}</span>
 												)}
-											</>
+											</React.Fragment>
 										))}
 									</span>
 									<h2 className='text-2xl font-semibold text-primary'>
@@ -102,7 +102,7 @@ export default function Posts({
 						{lastPostDate ? (
 							<Button onClick={() => loadMorePosts()} text='Load more' />
 						) : (
-							<p className='text-xl'>That's it, no more posts 🙂</p>
+							<p className='text-xl'>That&apos;s it, no more posts 🙂</p>
 						)}
 					</li>
 				</ul>
