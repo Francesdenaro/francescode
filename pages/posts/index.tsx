@@ -5,11 +5,12 @@ import Head from 'next/head'
 import React, { useState } from 'react'
 import Button from '@/components/Button'
 import PostCard from '@/components/PostCard'
+import Filters from '@/components/Filters'
 
 export default function Posts({ posts }: { posts: Post[] }) {
 	const [loadedPosts, setLoadedPosts] = useState<Post[]>(posts)
 	const [lastPostDate, setLastPostDate] = useState<string>(
-		posts[posts.length - 1]?.publishedAt
+		posts ? posts[posts.length - 1].publishedAt : ''
 	)
 
 	const loadMorePosts = async () => {
@@ -44,12 +45,14 @@ export default function Posts({ posts }: { posts: Post[] }) {
 			</Head>
 			<Layout hasSidebar={false}>
 				<h1 className='mb-10 text-3xl text-primary'>FrancesCode Posts</h1>
+				<Filters />
 				<ul className='grid grid-cols-1 px-4 xs:px-16 sm:px-28 md:grid-cols-2 md:gap-8 md:px-10 lg:grid-cols-3 lg:px-0 xl:gap-16'>
-					{loadedPosts.map(post => (
-						<React.Fragment key={post.slug.toString()}>
-							<PostCard post={post} />
-						</React.Fragment>
-					))}
+					{loadedPosts &&
+						loadedPosts.map(post => (
+							<React.Fragment key={post.slug.toString()}>
+								<PostCard post={post} />
+							</React.Fragment>
+						))}
 					<li className='flex flex-col items-center justify-center'>
 						{lastPostDate ? (
 							<Button onClick={() => loadMorePosts()} text='Load more' />

@@ -1,4 +1,5 @@
 import Button from '@/components/Button'
+import Filters from '@/components/Filters'
 import Layout from '@/components/Layout'
 import PostCard from '@/components/PostCard'
 import client from '@/lib/sanity'
@@ -14,7 +15,7 @@ interface Props {
 export default function CategoryPage({ posts, slug }: Props) {
 	const [loadedPosts, setLoadedPosts] = useState<Post[]>(posts)
 	const [lastPostDate, setLastPostDate] = useState<string>(
-		posts[posts.length - 1]?.publishedAt
+		posts ? posts[posts.length - 1].publishedAt : ''
 	)
 
 	const loadMorePosts = async () => {
@@ -32,11 +33,11 @@ export default function CategoryPage({ posts, slug }: Props) {
 			{ lastPostDate, slug }
 		)
 
-		if (!nextPosts.length) {
+		if (!nextPosts?.length) {
 			setLastPostDate('')
 			return
 		} else {
-			setLastPostDate(nextPosts[nextPosts.length - 1].publishedAt)
+			setLastPostDate(nextPosts[nextPosts?.length - 1].publishedAt)
 			setLoadedPosts(prev => [...prev, ...nextPosts])
 		}
 	}
@@ -49,12 +50,14 @@ export default function CategoryPage({ posts, slug }: Props) {
 			</Head>
 			<Layout hasSidebar={false}>
 				<h1 className='mb-10 text-3xl text-primary'>FrancesCode Posts</h1>
+				<Filters />
 				<ul className='grid grid-cols-1 px-4 xs:px-16 sm:px-28 md:grid-cols-2 md:gap-8 md:px-10 lg:grid-cols-3 lg:px-0 xl:gap-16'>
-					{loadedPosts.map(post => (
-						<React.Fragment key={post.slug.toString()}>
-							<PostCard post={post} />
-						</React.Fragment>
-					))}
+					{loadedPosts &&
+						loadedPosts.map(post => (
+							<React.Fragment key={post.slug.toString()}>
+								<PostCard post={post} />
+							</React.Fragment>
+						))}
 					<li className='flex flex-col items-center justify-center'>
 						{lastPostDate ? (
 							<Button onClick={() => loadMorePosts()} text='Load more' />
@@ -83,7 +86,6 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
 			slug: params.slug,
 		}
 	)
-	console.log(posts)
 
 	return {
 		props: { posts, slug: params.slug },
