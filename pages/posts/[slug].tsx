@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout'
 import client, { urlFor } from '@/lib/sanity'
-import { blocksToText } from '@/lib/utility'
+import { blocksToText, slugify } from '@/lib/utility'
 import { Post } from '@/Types'
 import { PortableText } from '@portabletext/react'
 import { Slug } from '@sanity/types'
@@ -8,17 +8,6 @@ import Head from 'next/head'
 import Image from 'next/image'
 
 export default function Posts({ post }: { post: Post }) {
-	const slugify = (text?: string) => {
-		if (!text) return ''
-		return text
-			.toString()
-			.toLowerCase()
-			.replace(/\s+/g, '-') // Replace spaces with -
-			.replace(/[^\w\-]+/g, '') // Remove all non-word chars
-			.replace(/\-\-+/g, '-') // Replace multiple - with single -
-			.replace(/^-+/, '') // Trim - from start of text
-			.replace(/-+$/, '') // Trim - from end of text
-	}
 	function addProductJsonLd(): { __html: string } {
 		const text = blocksToText(post.body)
 		return {

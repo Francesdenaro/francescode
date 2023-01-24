@@ -14,3 +14,16 @@ export function blocksToText(blocks: any, opts = {}) {
 		})
 		.join('\n\n')
 }
+
+export const slugify = (text?: string) => {
+	if (!text) return ''
+	return text
+		.toString()
+		.toLowerCase()
+		.replace(/\s+/g, '-') // Replace spaces with -
+		.replace(/[^\w\-]+/g, '') // Remove all non-word chars
+		.replace(/\-\-+/g, '-') // Replace multiple - with single -
+		.replace(/\d+/g, '') // Remove all numbers
+		.replace(/^-+/, '') // Trim - from start of text
+		.replace(/-+$/, '') // Trim - from end of text
+}
