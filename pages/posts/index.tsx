@@ -60,7 +60,10 @@ export default function Posts({
 						>
 							<article className='flex flex-col items-start '>
 								{post.mainImage && (
-									<Link className='overflow-hidden' href={`/${post.slug}`}>
+									<Link
+										className='overflow-hidden'
+										href={`/posts/${post.slug}`}
+									>
 										<Image
 											width={500}
 											height={100}
@@ -90,7 +93,7 @@ export default function Posts({
 										))}
 									</span>
 									<h2 className='text-2xl font-semibold text-primary'>
-										<Link href={`/${post.slug}`}>{post.title}</Link>
+										<Link href={`/posts/${post.slug}`}>{post.title}</Link>
 									</h2>
 									<p className='text-gray-700 py-5'>{post.excerpt}</p>
 								</div>

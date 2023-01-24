@@ -1,5 +1,6 @@
 import client from '@/lib/sanity'
 import { MenuItem } from '@/Types'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -22,10 +23,15 @@ const Navbar = () => {
 	}, [])
 
 	return (
-		<header className='mb-12 flex flex-wrap items-center justify-between bg-primary p-6 text-white shadow-lg transition-all'>
+		<header className='mb-12 flex flex-wrap items-center justify-between bg-primary px-10 py-4 text-white shadow-lg transition-all'>
 			<div className='mr-6 flex flex-shrink-0 items-center'>
 				<Link href='/' className='text-xl font-semibold tracking-tight'>
-					FrancesCode
+					<Image
+						src='/logo-francescode.webp'
+						alt='logo'
+						width={50}
+						height={50}
+					/>
 				</Link>
 			</div>
 			<div className='block lg:hidden'>

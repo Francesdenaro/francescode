@@ -1,8 +1,10 @@
 import Layout from '@/components/Layout'
 import client, { urlFor } from '@/lib/sanity'
+import { blocksToText } from '@/lib/utility'
 import { Post } from '@/Types'
 import { PortableText } from '@portabletext/react'
 import { Slug } from '@sanity/types'
+import Head from 'next/head'
 import Image from 'next/image'
 
 export default function Posts({ post }: { post: Post }) {
@@ -17,8 +19,72 @@ export default function Posts({ post }: { post: Post }) {
 			.replace(/^-+/, '') // Trim - from start of text
 			.replace(/-+$/, '') // Trim - from end of text
 	}
+	function addProductJsonLd(): { __html: string } {
+		const text = blocksToText(post.body)
+		return {
+			__html: JSON.stringify({
+				'@context': 'https://schema.org/',
+				'@type': 'BlogPosting',
+				'@id': `https://francescode.com/posts/${post.slug.current}`,
+				description: post.metaDescription,
+				headline: post.title,
+				name: post.title,
+				body: text,
+				image: {
+					'@type': 'ImageObject',
+					'@id': `https://francescode.com/posts/${post.slug.current}#primaryimage`,
+					url: urlFor(post.mainImage.asset).url(),
+					width: 800,
+					height: 600,
+				},
+				author: {
+					'@type': 'Person',
+					'@id': 'https://francescode.com/#author',
+					name: 'Francesco Denaro',
+					image: {
+						'@type': 'ImageObject',
+						'@id': 'https://francescode.com/#authorimage',
+						url: 'https://francescode.com/images/profile.jpg',
+					},
+					publisher: {
+						'@type': 'Organization',
+						'@id': 'https://francescode.com/',
+						name: 'FrancesCode',
+						logo: {
+							'@type': 'ImageObject',
+							'@id': 'https://francescode.com/#logo',
+							url: 'https://francescode.com/logo-francescode.webp',
+						},
+					},
+					datePublished: post.publishedAt,
+					url: `https://francescode.com/posts/${post.slug.current}`,
+					isPartOf: {
+						'@type': 'Blog',
+						'@id': 'https://francescode.com/posts/',
+						name: 'FrancesCode',
+						publisher: {
+							'@type': 'Organization',
+							'@id': 'https://francescode.com/',
+							name: 'FrancesCode',
+						},
+						url: 'https://francescode.com/',
+					},
+				},
+			}),
+		}
+	}
+
 	return post ? (
 		<Layout>
+			<Head>
+				<title>{post.metaTitle}</title>
+				<meta name='description' content={post.metaDescription} />
+				<script
+					type='application/ld+json'
+					dangerouslySetInnerHTML={addProductJsonLd()}
+					key='product-jsonld'
+				/>
+			</Head>
 			<Image
 				src={post ? urlFor(post.mainImage.asset).url() : ''}
 				alt={post ? post.mainImage.alt : ''}
