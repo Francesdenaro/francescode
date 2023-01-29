@@ -3,7 +3,7 @@ import Filters from '@/components/Filters'
 import Layout from '@/components/Layout'
 import PostCard from '@/components/PostCard'
 import client from '@/lib/sanity'
-import { Category, Post } from '@/Types'
+import { Author, Category, Post } from '@/Types'
 import { useStateMachine } from 'little-state-machine'
 import Head from 'next/head'
 import React, { useState } from 'react'
@@ -11,10 +11,10 @@ import React, { useState } from 'react'
 interface Props {
 	posts: Post[]
 	slug: string
-	category: Category
+	author: Author
 }
 
-export default function CategoryPage({ posts, slug, category }: Props) {
+export default function AuthorPage({ posts, slug, author }: Props) {
 	const [loadedPosts, setLoadedPosts] = useState<Post[]>(posts)
 	const [lastPostDate, setLastPostDate] = useState<string>(
 		posts ? posts[posts.length - 1].publishedAt : ''
@@ -97,11 +97,11 @@ export default function CategoryPage({ posts, slug, category }: Props) {
 	return (
 		<>
 			<Head>
-				<title>{category?.title} | FrancesCode</title>
-				<meta name='description' content='All FrancesCode ' />
+				<title>{author?.name}&apos;s Posts | FrancesCode</title>
+				<meta name='description' content={`In this page you will find all the posts published by ${author?.name}`} />
 			</Head>
 			<Layout hasSidebar={false}>
-				<h1 className='text-3xl text-primary'>{category?.title}</h1>
+				<h1 className='text-3xl text-primary'>All posts published by <em className='not-italic font-bold'>{author?.name}</em></h1>
 				<Filters showTags refetch={refetch}/>
 				<ul className='grid grid-cols-1 px-4 xs:px-16 sm:px-28 md:grid-cols-2 md:gap-8 md:px-10 lg:grid-cols-3 lg:px-0 xl:gap-16'>
 					{loadedPosts &&
@@ -125,7 +125,7 @@ export default function CategoryPage({ posts, slug, category }: Props) {
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
 	const posts = await client.fetch(
-		`*[_type == "post" && categories[]->slug.current match $slug] | order(publishedAt desc) [0...10] {
+		`*[_type == "post" && author->slug.current match $slug] | order(publishedAt desc) [0...10] {
 			"slug": slug.current,
 			title,
 			excerpt,
@@ -139,25 +139,25 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
 		}
 	)
 
-	const category = await client.fetch(
-		`*[_type == "category" && slug.current == $slug][0] {
-				title,
-				description,
+	const author = await client.fetch(
+		`*[_type == "author" && slug.current == $slug][0] {
+				name,
+				bio,
 			}`,
 		{ slug: params.slug }
 	)
 
 	return {
-		props: { posts, slug: params.slug, category },
+		props: { posts, slug: params.slug, author },
 	}
 }
 
 export async function getStaticPaths() {
-	const categories = await client.fetch(`*[_type == "category"]`)
+	const categories = await client.fetch(`*[_type == "author"]`)
 
 	return {
-		paths: categories.map((category: Category) => ({
-			params: { slug: category.slug.current },
+		paths: categories.map((author: Author) => ({
+			params: { slug: author.slug.current },
 		})),
 		fallback: true,
 	}

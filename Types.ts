@@ -48,6 +48,7 @@ export interface Post {
 	featured: boolean
 	metaTitle: string
 	metaDescription: string
+	estimatedReadingTime: number
 }
 
 export interface Author {

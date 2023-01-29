@@ -17,20 +17,20 @@ const Layout = ({
 	return (
 		<>
 			<Head>
-				<link rel='icon' href='/logo.png' />
+				<link rel='icon' href='/logo-blu.webp' />
 			</Head>
 			<div className='flex min-h-screen flex-col'>
 				<Navbar />
-				<div className='mx-auto mb-auto flex h-auto w-full items-stretch justify-center gap-10 p-4 pb-16 xl:w-content'>
-					<main
+				<main className='mx-auto mb-auto flex h-auto w-full items-stretch justify-center gap-10 p-4 pb-16 xl:w-content'>
+					<div
 						className={`mb-auto flex ${
 							hasSidebar ? 'w-full max-w-4xl' : 'w-content'
-						} max-w-8xl flex-col items-start ${className}`}
+						} max-w-8xl flex-col items-start gap-8 ${className}`}
 					>
 						{children}
-					</main>
+					</div>
 					{hasSidebar && <Sidebar />}
-				</div>
+				</main>
 				<Footer />
 			</div>
 		</>

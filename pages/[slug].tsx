@@ -4,8 +4,10 @@ import { blocksToText, slugify } from '@/lib/utility'
 import { Post } from '@/Types'
 import { PortableText } from '@portabletext/react'
 import { Slug } from '@sanity/types'
+import moment from 'moment'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Posts({ post }: { post: Post }) {
 	function addProductJsonLd(): { __html: string } {
@@ -83,8 +85,24 @@ export default function Posts({ post }: { post: Post }) {
 			/>
 			<article className='prose prose-headings:font-medium prose-headings:text-primary prose-blockquote:text-primary lg:prose-xl'>
 				<h1 className='font-semibold text-primary md:text-5xl'>{post.title}</h1>
+				<ul className='flex list-none gap-8'>
+					<li className='text-gray-500 text-sm '>
+						📆 {moment(post.publishedAt).format('DD MMMM YYYY')}
+					</li>
+					<li className='text-gray-500 text-sm'>
+						⏱ {post.estimatedReadingTime} min read
+					</li>
+					<li className='text-gray-500 text-sm'>
+						<Link className='no-underline' href={`/${post.author.slug}`}>
+							👤{' '}
+							<em className='font-normal not-italic underline'>
+								{post.author.name}
+							</em>
+						</Link>
+					</li>
+				</ul>
 				<PortableText
-					value={post.body}
+					value={post?.body}
 					components={{
 						types: {
 							image: ({ value }) => {
@@ -127,7 +145,18 @@ export default function Posts({ post }: { post: Post }) {
 
 export async function getStaticProps({ params }: { params: { slug: Slug } }) {
 	const post = await client.fetch(
-		`*[_type == "post" && slug.current == $slug][0]`,
+		`*[_type == "post" && slug.current == $slug][0] {
+			title,
+			slug,
+			"author": author->{name, "avatar": image.asset->url},
+			"categories": categories[]->{title, slug},
+			mainImage,
+			body,
+			"publishedAt": publishedAt,
+			"metaTitle": metaTitle,
+			"metaDescription": metaDescription,
+			"estimatedReadingTime": round(length(pt::text(body)) / 5 / 180 ),
+		}`,
 		{
 			slug: params.slug,
 		}
